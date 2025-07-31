@@ -24,6 +24,7 @@ public class NPCInteract : MonoBehaviour
     //Choice
     public GameObject choicePanel;
     public GameObject choiceButtonPrefab;
+    public bool isChoosing = false;
 
     void Start()  //Set everything to be not active first coz convo have not start
     {
@@ -38,7 +39,7 @@ public class NPCInteract : MonoBehaviour
         {
             StartInteract();
         }
-        if (interactingNPC && Input.GetKeyDown(KeyCode.Space))
+        if (interactingNPC && Input.GetKeyDown(KeyCode.Space) && !isChoosing)
         {
             ContinueInteract();
         }
@@ -78,6 +79,7 @@ public class NPCInteract : MonoBehaviour
     //Spawn Choice buttons
     void ShowChoices()
     {
+        isChoosing = true;
         choicePanel.SetActive(true);
         continuePrompt.SetActive(false);
 
@@ -102,6 +104,7 @@ public class NPCInteract : MonoBehaviour
     //after choice selected, close the UI buttons
     void ChoiceSelected(DialogueChoice choice)
     {
+        isChoosing = false;
         dialogueText.text = choice.NpcResponse; //show npc response
         choicePanel.SetActive(false ); //hide panel after choosing the choice
         continuePrompt.SetActive(true);
