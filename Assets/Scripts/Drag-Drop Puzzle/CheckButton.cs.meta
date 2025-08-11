@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5ff876ef6167abc4d8b7849d79279fb5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sentenceData: {fileID: 11400000, guid: edcd163556d97c740ae3af53cf9fc7c1, type: 2}
+  - wordArea: {instanceID: 0}
+  - dropWordsArea: {instanceID: 0}
+  - wordPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
