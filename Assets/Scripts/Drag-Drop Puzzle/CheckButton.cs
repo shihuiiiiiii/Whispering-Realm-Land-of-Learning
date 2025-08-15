@@ -70,6 +70,7 @@ public class CheckButton : MonoBehaviour
         if (droppedWords.Count != sentenceData.Sentence.Count)
         {
             Debug.Log("There are still missing words");
+            return;
         }
 
         //Check whether the seentence have any word in wrong order by iterating through it
@@ -101,7 +102,7 @@ public class CheckButton : MonoBehaviour
         //Tell GameManager that puzzle is solved and NPC is helped
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.NPCHelped();
+            GameManager.Instance?.NPCHelped(); //count NPC helped
         }
 
         //Wait for the correct sound effect is played finished before going back to MainGame scene
