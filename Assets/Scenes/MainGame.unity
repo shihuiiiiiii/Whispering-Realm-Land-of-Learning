@@ -650,6 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c313bcb38092c40974b2dbd45e6020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  puzzleData: {fileID: 0}
 --- !u!4 &82152212
 Transform:
   m_ObjectHideFlags: 0
@@ -1268,7 +1269,7 @@ PrefabInstance:
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: puzzleData
       value: 
-      objectReference: {fileID: 11400000, guid: 1a87aabf16a923a44b039da1ba001a78, type: 2}
+      objectReference: {fileID: 11400000, guid: edcd163556d97c740ae3af53cf9fc7c1, type: 2}
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: choicePanel
       value: 
@@ -6247,7 +6248,7 @@ PrefabInstance:
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: puzzleData
       value: 
-      objectReference: {fileID: 11400000, guid: 23905565ee958514493d5bddd4606eb2, type: 2}
+      objectReference: {fileID: 11400000, guid: edcd163556d97c740ae3af53cf9fc7c1, type: 2}
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: choicePanel
       value: 
@@ -11795,7 +11796,7 @@ PrefabInstance:
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: puzzleData
       value: 
-      objectReference: {fileID: 11400000, guid: 0dabc7ccf214ebb4db992cf692b2eba2, type: 2}
+      objectReference: {fileID: 11400000, guid: edcd163556d97c740ae3af53cf9fc7c1, type: 2}
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: choicePanel
       value: 
@@ -14091,7 +14092,7 @@ PrefabInstance:
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: puzzleData
       value: 
-      objectReference: {fileID: 11400000, guid: d8542d4d39687c240bc7b5cf28b32891, type: 2}
+      objectReference: {fileID: 11400000, guid: edcd163556d97c740ae3af53cf9fc7c1, type: 2}
     - target: {fileID: 7381794338376655117, guid: a830c051d032c5c4cbc1752627c268e2, type: 3}
       propertyPath: choicePanel
       value: 

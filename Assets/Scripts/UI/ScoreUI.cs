@@ -10,6 +10,7 @@ public class ScoreUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            //calculate the percentage of NPCs help (solved puzzles)
             helpedText.text = "NPCs Helped: " + ((float)GameManager.Instance.NPCsHelped/ GameManager.Instance.totalNPCs * 100f).ToString("F0") + "%"; //set percentage to show no decimal place using F0
         }
     }

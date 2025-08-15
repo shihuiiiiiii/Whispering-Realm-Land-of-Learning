@@ -7,37 +7,37 @@ using UnityEngine.UI;
 public class NPCInteract : MonoBehaviour
 {
     [Header("NPC Settings")]
-    private bool playerNear = false;
-    private bool interactingNPC = false;
-    private int currentDialogue;
-    private bool hasBeenHelped = false;
+    private bool playerNear = false; //is player close enough to NPC to interact
+    private bool interactingNPC = false; //is player interacting with NPC
+    private int currentDialogue; //the current line of Dialogue the player is at
+    public bool hasBeenHelped = false; //if the player has helped the NPC
 
     //Dialogue
     [Header("Dialogue UI")]
-    public GameObject prompt;
-    public GameObject dialoguePanel;
-    public TMP_Text dialogueText;
-    public GameObject continuePrompt;
+    public GameObject prompt; //"Press E to talk" prmt on NPC
+    public GameObject dialoguePanel; //NPC dialogue Panel
+    public TMP_Text dialogueText; //dialogue text in dialogue panel
+    public GameObject continuePrompt; //"Press space to continue"
 
     //Data of dialogue content
     [Header("Dialogue Data")]
-    public DialogueLines dialogueLines;
-    public DialogueChoiceData dialogueChoiceData;
-    public int ChoiceTriggerLine = 2;
+    public DialogueLines dialogueLines; //dialogue lines for the NPC
+    public DialogueChoiceData dialogueChoiceData; //data for choices player can pick
+    public int ChoiceTriggerLine = 2; //which line will the choice options be triggered
 
     //Data of the Puzzle
     [Header("Puzzle Data")]
-    public bool havePuzzle = false;
-    public PuzzleData puzzleData;
+    public bool havePuzzle = false; //does NPC have puzzle on them
+    public PuzzleData puzzleData; //the puzzle data for the npc if they have
 
     //Choice
     [Header("Choice UI")]
-    public GameObject choicePanel;
-    public GameObject choiceButtonPrefab;
-    public bool isChoosing = false;
+    public GameObject choicePanel; //panel for the choices
+    public GameObject choiceButtonPrefab; //choice button prefab
+    public bool isChoosing = false; //if player is choosing the choice
     public bool TriggerPuzzleChoice = false; //whether it is a choice that will trigger the puzzle
 
-    void Start()  //Set everything to be not active first coz convo have not start
+    void Start()  //Set everything to be not active to hide because dialogue have not start
     {
         prompt.SetActive(false);
         dialoguePanel.SetActive(false);
@@ -50,7 +50,7 @@ public class NPCInteract : MonoBehaviour
         {
             StartInteract();
         }
-        if (interactingNPC && !isChoosing && Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (interactingNPC && !isChoosing && Input.GetKeyDown(KeyCode.Space))
         {
             ContinueInteract();
         }
@@ -69,17 +69,18 @@ public class NPCInteract : MonoBehaviour
             currentDialogue = 3;
         }
 
-            prompt.SetActive(false);
+        prompt.SetActive(false);
         dialoguePanel.SetActive(true);
         continuePrompt.SetActive(true);
         choicePanel.SetActive(false);
 
         dialogueText.text = dialogueLines.Lines[currentDialogue];
     }
-    void ContinueInteract() //change to next sentence of dialogue if have if not end convo
+    void ContinueInteract() //change to next sentence of dialogue if have if not end conversation
     {
         currentDialogue++;
 
+        //if this dialogue line will trigger choice or not to show the choice panel
         if (ChoiceTriggerLine >= 0 && currentDialogue == ChoiceTriggerLine)
         {
             ShowChoices();
@@ -110,6 +111,7 @@ public class NPCInteract : MonoBehaviour
 
         foreach (DialogueChoice choice in dialogueChoiceData.Choices)
         {
+            DialogueChoice currentChoice = choice; //capture players choice
             GameObject choiceButton = Instantiate(choiceButtonPrefab, choicePanel.transform);
             TMP_Text buttonText = choiceButton.GetComponentInChildren<TMP_Text>();
             buttonText.text = choice.PlayerChoice;
@@ -121,8 +123,8 @@ public class NPCInteract : MonoBehaviour
 
                 if (havePuzzle && choice.TriggersPuzzleChoice)
                 {
-                    PuzzleManager.puzzleData = this.puzzleData;
-                    Debug.Log("Loading Puzzle");
+                    Debug.Log("Loading Puzzle" + this.puzzleData.name);
+                    PuzzleManager.Instance.puzzleData = this.puzzleData;
                     UnityEngine.SceneManagement.SceneManager.LoadScene("SentencePuzzle");
                 }
             });
@@ -183,6 +185,7 @@ public class NPCInteract : MonoBehaviour
         if (!hasBeenHelped)
         {
             hasBeenHelped = true;
+            GameManager.Instance.NPCsHelped++;
         }
     }
 }

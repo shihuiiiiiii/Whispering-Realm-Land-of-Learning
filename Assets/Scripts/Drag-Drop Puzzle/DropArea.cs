@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 public class DropArea : MonoBehaviour, IDropHandler
 {
-    public Transform dropWordsContent;
+    public Transform dropWordsContent; //DropWordsArea
     public void OnDrop (PointerEventData eventData)
     {
-        var word = eventData.pointerDrag;
+        var word = eventData.pointerDrag; //the word object that the player is dragging
 
         if (word != null)
         {
@@ -16,26 +16,10 @@ public class DropArea : MonoBehaviour, IDropHandler
             word.transform.SetParent(dropWordsContent, false );
             RectTransform rect = word.GetComponent<RectTransform>();
 
-            rect.localPosition = Vector3.zero; //
-            rect.localScale = Vector3.one; //make sure the scale is one to be visible
+            rect.localPosition = Vector3.zero; //snap word into exact position in DropWordsArea
+            rect.localScale = Vector3.one; //reset the scale so its not too big
 
-            word.transform.SetAsLastSibling();
-
-            ////Allow Rearrange words inside of DropArea
-            //int closestIndex = dropWordsContent.childCount;
-
-            //for (int i = 0; i < dropWordsContent.childCount; i++)
-            //{
-            //    Transform child = dropWordsContent.GetChild(i);
-            //    if (child == word.transform) continue;
-
-            //    if (rect.anchoredPosition.x < child.GetComponent<RectTransform>().anchoredPosition.x)
-            //    {
-            //        closestIndex = i;
-            //        break;
-            //    }
-            //}
-            //word.transform.SetSiblingIndex(closestIndex);
+            word.transform.SetAsLastSibling(); //add the next word to the right in the DropWordsArea
         }
     }
 }
