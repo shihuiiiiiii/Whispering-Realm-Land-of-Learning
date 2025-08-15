@@ -5,29 +5,37 @@ using UnityEngine.EventSystems;
 
 public class DropArea : MonoBehaviour, IDropHandler
 {
+    public Transform dropWordsContent;
     public void OnDrop (PointerEventData eventData)
     {
-        Debug.Log("Word is dropped");
+        var word = eventData.pointerDrag;
 
-        GameObject wordDropped = eventData.pointerDrag;
-        wordDropped.transform.SetParent(transform); //set the DropWordArea as the parent
-
-        int closestIndex = transform.childCount;
-
-        for (int i = 0; i < closestIndex; i++)
+        if (word != null)
         {
-            Transform child = transform.GetChild(i);
+            //Parent the word to the content in viewport
+            word.transform.SetParent(dropWordsContent, false );
+            RectTransform rect = word.GetComponent<RectTransform>();
 
-            if (child == wordDropped.transform) continue;
+            rect.localPosition = Vector3.zero; //
+            rect.localScale = Vector3.one; //make sure the scale is one to be visible
 
-            //Check whether word is dropped on the left or right of the word thats currently in the DropWordArea
-            if (wordDropped.transform.position.x < child.position.x)
-            {
-                closestIndex = i;
-                break;
-            }
+            word.transform.SetAsLastSibling();
+
+            ////Allow Rearrange words inside of DropArea
+            //int closestIndex = dropWordsContent.childCount;
+
+            //for (int i = 0; i < dropWordsContent.childCount; i++)
+            //{
+            //    Transform child = dropWordsContent.GetChild(i);
+            //    if (child == word.transform) continue;
+
+            //    if (rect.anchoredPosition.x < child.GetComponent<RectTransform>().anchoredPosition.x)
+            //    {
+            //        closestIndex = i;
+            //        break;
+            //    }
+            //}
+            //word.transform.SetSiblingIndex(closestIndex);
         }
-        wordDropped.transform.SetParent(transform);
-        wordDropped.transform.SetSiblingIndex(closestIndex); //allows re-arranging in the DropWordArea
     }
 }

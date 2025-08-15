@@ -10,6 +10,8 @@ public class DialogueChoice
 
     [TextArea]
     public string NpcResponse; //what the npc reply for that option
+
+    public bool TriggersPuzzleChoice; //if this choice should trigger the puzzle scene
 }
 
 [CreateAssetMenu (fileName = "DialogueChoice", menuName = "Dialogue/Choice")]

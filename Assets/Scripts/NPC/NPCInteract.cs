@@ -6,25 +6,36 @@ using UnityEngine.UI;
 
 public class NPCInteract : MonoBehaviour
 {
+    [Header("NPC Settings")]
     private bool playerNear = false;
     private bool interactingNPC = false;
     private int currentDialogue;
+    private bool hasBeenHelped = false;
 
     //Dialogue
+    [Header("Dialogue UI")]
     public GameObject prompt;
     public GameObject dialoguePanel;
     public TMP_Text dialogueText;
     public GameObject continuePrompt;
 
     //Data of dialogue content
+    [Header("Dialogue Data")]
     public DialogueLines dialogueLines;
     public DialogueChoiceData dialogueChoiceData;
     public int ChoiceTriggerLine = 2;
 
+    //Data of the Puzzle
+    [Header("Puzzle Data")]
+    public bool havePuzzle = false;
+    public PuzzleData puzzleData;
+
     //Choice
+    [Header("Choice UI")]
     public GameObject choicePanel;
     public GameObject choiceButtonPrefab;
     public bool isChoosing = false;
+    public bool TriggerPuzzleChoice = false; //whether it is a choice that will trigger the puzzle
 
     void Start()  //Set everything to be not active first coz convo have not start
     {
@@ -39,7 +50,7 @@ public class NPCInteract : MonoBehaviour
         {
             StartInteract();
         }
-        if (interactingNPC && Input.GetKeyDown(KeyCode.Space) && !isChoosing)
+        if (interactingNPC && !isChoosing && Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             ContinueInteract();
         }
@@ -47,9 +58,18 @@ public class NPCInteract : MonoBehaviour
     void StartInteract()
     {
         interactingNPC = true;
-        currentDialogue = 0; //which dialogue line the npc at
+        //currentDialogue = 0; //which dialogue line the npc at
 
-        prompt.SetActive(false);
+        if (DialogueManager.dialogueManager.dialogueNum == 0)
+        {
+            currentDialogue = 0;
+        }
+        else if (DialogueManager.dialogueManager.dialogueNum == 2)
+        {
+            currentDialogue = 3;
+        }
+
+            prompt.SetActive(false);
         dialoguePanel.SetActive(true);
         continuePrompt.SetActive(true);
         choicePanel.SetActive(false);
@@ -65,7 +85,7 @@ public class NPCInteract : MonoBehaviour
             ShowChoices();
             return;
         }
-
+        //End dialogue if finished
         if (currentDialogue >= dialogueLines.Lines.Length)
         {
             EndInteract();
@@ -97,6 +117,14 @@ public class NPCInteract : MonoBehaviour
             choiceButton.GetComponent<Button>().onClick.AddListener(() =>
             {
                 ChoiceSelected(choice);
+                Debug.Log("Choice Selected:"+ choice.PlayerChoice);
+
+                if (havePuzzle && choice.TriggersPuzzleChoice)
+                {
+                    PuzzleManager.puzzleData = this.puzzleData;
+                    Debug.Log("Loading Puzzle");
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("SentencePuzzle");
+                }
             });
         }
     }
@@ -135,9 +163,26 @@ public class NPCInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNear = false;
+            interactingNPC = false; //reset dialogue state
+            currentDialogue = 0; //restart dialogue
+            isChoosing = false;
             Debug.Log("Player is not Near");
-            prompt.SetActive(false);
-            dialoguePanel.SetActive(false); //hide panel
+
+            if (prompt != null)
+            {
+                prompt.SetActive(false);
+            }
+            if (dialoguePanel != null)
+            {
+                dialoguePanel.SetActive(false); //hide panel
+            }
+        }
+    }
+    public void CompleteHelp()
+    {
+        if (!hasBeenHelped)
+        {
+            hasBeenHelped = true;
         }
     }
 }

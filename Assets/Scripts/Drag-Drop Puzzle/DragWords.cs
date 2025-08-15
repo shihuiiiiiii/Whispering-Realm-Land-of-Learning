@@ -8,28 +8,39 @@ public class DragWords : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private Transform originalParent; //original parent = WordArea, so if the words not place correctly it will go back here
     private Vector3 originalPosition; //original position in the parent object(WordArea)
     private RectTransform rectTransform; // needed to move the words
+    private CanvasGroup canvasGroup; // for raycast blocking
+    private Canvas canvas;
 
+    public Transform parentAfterDrag;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvas = GetComponentInParent<Canvas>();
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("Start Drag");
-        originalPosition = rectTransform.anchoredPosition; //where the word's original position is
+        originalParent = transform.parent; //store original parent
+
+        transform.SetParent(canvas.transform);
+        transform.SetAsLastSibling(); //so the word is on top visually
+        canvasGroup.blocksRaycasts = false; //so the word can be dropped on DropArea
     }
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log("Dragging");
-        rectTransform.anchoredPosition += eventData.delta; //move the word
+        rectTransform.anchoredPosition += eventData.delta/canvas.scaleFactor; //move the word
     }
     public void OnEndDrag(PointerEventData eventData)
     {
         Debug.Log("Stop Drag");
+        canvasGroup.blocksRaycasts = true;
 
-        if (eventData.pointerEnter == null || eventData.pointerEnter.GetComponent<DropArea>() == null)
+        if (transform.parent == canvas.transform)
         {
-            rectTransform.anchoredPosition = originalPosition;
+            transform.SetParent(originalParent, false);
+            rectTransform.localPosition = Vector3.zero;
         }
     }
 }
